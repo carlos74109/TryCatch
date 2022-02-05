@@ -16,8 +16,12 @@ public class Reserva {
 		super();
 	}
 	
-	public Reserva(Integer numeroQuarto, Date chekin, Date chekout) {
-		super();
+	public Reserva(Integer numeroQuarto, Date chekin, Date chekout) throws ExceptionProprio {
+		
+		if(!chekout.after(chekin)){
+			throw new ExceptionProprio("Erro na reserva");
+		}
+		
 		this.numeroQuarto = numeroQuarto;
 		this.chekin = chekin;
 		this.chekout = chekout;
@@ -42,9 +46,19 @@ public class Reserva {
 		
 	}
 	
-	public void updateDatas(Date chekin, Date chekout) {
+	public void updateDatas(Date chekin, Date chekout) throws ExceptionProprio {
+		
+		Date now = new Date();
+		if(chekin.before(now) || chekout.before(now)) {
+			throw new ExceptionProprio("Data anterior a atual, pf adicione uma data futura");
+		}
+		if(!chekout.after(chekin)){
+			throw new ExceptionProprio("Erro na reserva");
+		}
+		
 		this.chekin = chekin;
 		this.chekout = chekout;
+	
 	}
 	
 	@Override

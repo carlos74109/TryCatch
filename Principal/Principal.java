@@ -5,28 +5,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import Entidades.ExceptionProprio;
 import Entidades.Reserva;
 
 public class Principal {
 
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		System.out.println("Numero de quarto: ");
-		int numero = sc.nextInt();
-		
-		System.out.println("Chekin data (dd/MM/yyyy) ");
-		Date chekin = sdf.parse(sc.next());
-		
-		System.out.println("checkout data (dd/MM/yyyy) ");
-		Date checkout = sdf.parse(sc.next());
-		
-		if(!checkout.after(chekin)) {
-			System.out.println("Erro, chekout tem que ser depois da data de chekin");
-		}
-		else {
+		try {
+			System.out.println("Numero de quarto: ");
+			int numero = sc.nextInt();
+			
+			System.out.println("Chekin data (dd/MM/yyyy) ");
+			Date chekin = sdf.parse(sc.next());
+			
+			System.out.println("checkout data (dd/MM/yyyy) ");
+			Date checkout = sdf.parse(sc.next());
+	
 			Reserva reserva = new Reserva(numero, chekin, checkout);
 			System.out.println(reserva);
 			
@@ -38,24 +36,18 @@ public class Principal {
 			chekin = sdf.parse(sc.next());
 			
 			System.out.println("checkout data (dd/MM/yyyy) ");
-			checkout = sdf.parse(sc.next());
+			checkout = sdf.parse(sc.next());		
 			
+			reserva.updateDatas(chekin, chekin);
 			
-			Date now = new Date();
-			if(chekin.before(now) || checkout.before(now)) {
-				System.out.println("Data anterior a atual");
-			}
-			else if(!checkout.after(chekin)){
-				System.out.println("Erro na reserva");
-			}
-			else {
-				reserva.updateDatas(chekin, chekin);
-				System.out.println(reserva);
-				
-			}
-			
-		}
+			System.out.println("Reserva : " + reserva);
 		
+		}catch (ParseException e) {
+			System.out.println("Data invalida");
+		}
+		catch (ExceptionProprio e) {
+			System.out.println(e.getMessage());
+		}
 		sc.close();
 	}	
 
